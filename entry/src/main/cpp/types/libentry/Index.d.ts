@@ -1,2 +1,2 @@
 export const add: (a: number, b: number) => number;
-export const testSpdLogNapi: () => void;
+export const testSpdLogNapi: (baseFileName: string) => void;

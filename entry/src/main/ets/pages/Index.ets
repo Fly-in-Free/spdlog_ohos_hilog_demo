@@ -13,7 +13,8 @@ struct Index {
           .fontSize(50)
           .fontWeight(FontWeight.Bold)
           .onClick(() => {
-            testNapi.testSpdLogNapi()
+            const baseFileName = getContext(this).filesDir + '/logs/log_base_name.log'
+            testNapi.testSpdLogNapi(baseFileName)
           })
       }
       .width('100%')
