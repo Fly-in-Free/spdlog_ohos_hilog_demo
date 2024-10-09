@@ -1,4 +1,7 @@
 #include "napi/native_api.h"
+#include <memory>
+#include "spdlog/spdlog.h"
+#include "spdlog/sinks/ohos_hilog_sink.h"
 
 static napi_value Add(napi_env env, napi_callback_info info)
 {
@@ -26,11 +29,29 @@ static napi_value Add(napi_env env, napi_callback_info info)
 
 }
 
+static napi_value TestSpdLogNapi(napi_env env, napi_callback_info info) 
+{
+    auto hilog_sink = std::make_shared<spdlog::sinks::ohos_hilog_sink_mt>("spdlog_napi", 0x00FF);
+    hilog_sink->set_level(spdlog::level::level_enum::trace);
+    
+    spdlog::logger logger("spdlog_napi", {hilog_sink});
+    logger.set_level(spdlog::level::level_enum::trace);
+    
+    logger.trace("this is a trace message");
+    logger.debug("this is a debug message");
+    logger.info("this is a info message");
+    logger.warn("this is a warn message");
+    logger.error("this is a error message");
+    logger.critical("this is a critical message");
+    return nullptr; // void
+}
+
 EXTERN_C_START
 static napi_value Init(napi_env env, napi_value exports)
 {
     napi_property_descriptor desc[] = {
-        { "add", nullptr, Add, nullptr, nullptr, nullptr, napi_default, nullptr }
+        { "add", nullptr, Add, nullptr, nullptr, nullptr, napi_default, nullptr },
+        { "testSpdLogNapi", nullptr, TestSpdLogNapi, nullptr, nullptr, nullptr, napi_default, nullptr }
     };
     napi_define_properties(env, exports, sizeof(desc) / sizeof(desc[0]), desc);
     return exports;
