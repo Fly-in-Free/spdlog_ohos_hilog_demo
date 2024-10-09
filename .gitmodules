@@ -1,0 +1,3 @@
+[submodule "entry/src/main/cpp/spdlog"]
+	path = entry/src/main/cpp/spdlog
+	url = git@github.com:Fly-in-Free/spdlog.git
